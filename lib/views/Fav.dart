@@ -1,11 +1,7 @@
-
-/*import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../ApI/RecipesApi.dart';
-import '../Sql/SqlModel.dart';
 import '../Sql/SqlProvider.dart';
-import 'DetailsHome.dart';
+import '../models/RecipesModal.dart';
 
 class FavHome extends StatefulWidget {
   const FavHome({super.key});
@@ -15,58 +11,69 @@ class FavHome extends StatefulWidget {
 }
 
 class _RecipesHomeState extends State<FavHome> {
-  List <SQLModel> recipes = [];
   RecipesApi api1 = RecipesApi();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text("Recipes",style: TextStyle(fontSize: 30,color: Colors.black),),
+        title: const Text(
+          "Favorites",
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: (){
-            setState(() {
-              // FoodProvider.instance.insert(SQLModel(id: ,title: title, image: image))
-            });
-          }, icon: Icon(Icons.favorite_border)),
-          Icon(Icons.play_arrow_outlined),
-          Icon(Icons.shopping_cart_outlined),
-          Icon(Icons.share),
+          IconButton(
+              onPressed: () {
+
+              },
+              icon: const Icon(Icons.favorite_border)),
+          const Icon(Icons.play_arrow_outlined),
+          const Icon(Icons.shopping_cart_outlined),
+          const Icon(Icons.share),
         ],
       ),
-      body: FutureBuilder<List<SQLModel>?>(
+      body: FutureBuilder<List<RecipesModels>?>(
         //The data from where ?
-        future: FoodProvider.instance.getAllRecepies(),
-        builder: (context, AsyncSnapshot snapshot){
-          if(snapshot.hasData){
+        future: FoodProvider.instance.getAllRecipes(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
             return Card(
               child: GridView.builder(
                   itemCount: snapshot.data.length,
-                  gridDelegate:SliverGridDelegateWithFixedCrossAxisCount (crossAxisCount: 2),
-                  itemBuilder: (context,i){
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (context, i) {
                     return GestureDetector(
                       child: Card(
                         child: Column(children: [
-                          Image.network(recipes.elementAt(i).image),
-                          Text("${recipes.elementAt(i).title}"),
+                          Image.network(snapshot.data.elementAt(i).image),
+                          Text(snapshot.data.elementAt(i).title),
                         ]),
-                      ),);
+                      ),
+                    );
                   }),
             );
-          }
-          else if(snapshot.hasError){
+          } else if (snapshot.hasError) {
             return Center(child: Text("${snapshot.error}"));
           }
-          return Center(child: CircularProgressIndicator(),);
-        }
-
-
-        ,)
-
-      ,
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
-}*/
+}

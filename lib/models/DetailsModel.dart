@@ -11,14 +11,14 @@ class DetailsModel {
     required this.summary
   });
 
-  DetailsModel.fromjson(Map<String,dynamic> map){
+  DetailsModel.fromJson(Map<String,dynamic> map){
     title = map['title'];
     readyInMinutes = map['readyInMinutes'];
     image = map['image'];
     summary = map['summary'];
   }
 
-  Map<String,dynamic> tojson() {
+  Map<String,dynamic> toJson() {
     Map<String, dynamic> map = {};
     map['title'] = title;
     map['readyInMinutes'] = readyInMinutes;

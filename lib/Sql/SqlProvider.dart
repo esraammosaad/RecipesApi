@@ -1,7 +1,6 @@
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'SqlModel.dart';
+import 'package:wweek16_api/models/RecipesModal.dart';
 
 
 const String tableRecipes = 'tablerecipes';
@@ -29,31 +28,31 @@ create table $tableRecipes (
         });
   }
 
-  Future<List<SQLModel>> getAllRecepies() async {
-    List<Map<String , dynamic >> foodmaps = await db.query(tableRecipes);
-    if (foodmaps.isEmpty) {
+  Future<List<RecipesModels>> getAllRecipes() async {
+    List<Map<String , dynamic >> foodMaps = await db.query(tableRecipes);
+    if (foodMaps.isEmpty) {
       return [];
     }else {
-      List<SQLModel> recipes = [];
-      for ( var element in foodmaps){
-        recipes.add(SQLModel.fromAPI(element));
+      List<RecipesModels> recipes = [];
+      for ( var element in foodMaps){
+        recipes.add(RecipesModels.fromJson(element));
       }
       return recipes;
     }
   }
 
-  Future<SQLModel> insert(SQLModel sqlmodel) async {
-    sqlmodel.id = await db.insert(tableRecipes, sqlmodel.toMap());
-    return sqlmodel;
+  Future<int?> insert(RecipesModels sqlModel) async {
+    sqlModel.id = await db.insert(tableRecipes, sqlModel.toMap());
+    return sqlModel.id;
   }
 
   Future<int> delete(int id) async {
     return await db.delete(tableRecipes, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  Future<int> update(SQLModel sqlmodel) async {
-    return await db.update(tableRecipes, sqlmodel.toMap(),
-        where: '$columnId = ?', whereArgs: [sqlmodel.id]);
+  Future<int> update(RecipesModels sqlModel) async {
+    return await db.update(tableRecipes, sqlModel.toMap(),
+        where: '$columnId = ?', whereArgs: [sqlModel.id]);
   }
 
   Future close() async => db.close();
